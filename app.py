@@ -31,9 +31,11 @@ def index():
             conn = get_conn()
             cur = conn.cursor()
             cur.execute(query)
-            try:
+            if cur.description is not None:
+                # Query returned rows
                 result = cur.fetchall()
-            except Exception:
+            else:
+                # Query did not return rows (e.g., INSERT/UPDATE)
                 result = 'Query executed.'
             cur.close()
             conn.close()
