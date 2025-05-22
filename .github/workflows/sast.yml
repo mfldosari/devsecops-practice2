@@ -1,3 +1,19 @@
+# .github/workflows/sast.yml
+#
+# GitHub Actions workflow for Static Application Security Testing (SAST)
+# and container image scanning.
+#
+# Steps:
+#   1. Checkout code
+#   2. Set up Python
+#   3. Install Bandit
+#   4. Run Bandit SAST scan
+#   5. Build Docker image
+#   6. Run Trivy vulnerability scan
+#   7. Upload Trivy report
+#
+# Triggers on push, pull_request, and manual dispatch.
+
 name: SAST Scan
 
 on:

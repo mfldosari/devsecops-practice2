@@ -1,3 +1,16 @@
+# .github/workflows/dast.yml
+#
+# GitHub Actions workflow for Dynamic Application Security Testing (DAST)
+# using OWASP ZAP against the running Flask app container.
+#
+# Steps:
+#   1. Checkout code
+#   2. Build and run containers
+#   3. Wait for app to be healthy
+#   4. Run ZAP scan
+#   5. Upload ZAP report
+#   6. Tear down containers
+
 name: DAST
 
 on:

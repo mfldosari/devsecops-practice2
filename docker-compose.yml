@@ -1,3 +1,16 @@
+# Docker Compose configuration for DevSecOps Practice Project
+#
+# Services:
+#   db: PostgreSQL database container
+#   app: Vulnerable Flask web app container
+#
+# Usage:
+#   docker compose up --build
+#
+# Exposes:
+#   - App: http://localhost:5000
+#   - DB:  localhost:5432
+
 version: '3.8'
 services:
   db:

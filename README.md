@@ -1,4 +1,16 @@
 # DevSecOps Practice Project
+#
+# This README provides an overview of the project, setup instructions, and security practices.
+#
+# Key files:
+# - app.py: Flask web app (intentionally vulnerable)
+# - docker-compose.yml: Orchestrates app and database containers
+# - Dockerfile: Builds the Flask app container
+# - postgres.Dockerfile: Builds the PostgreSQL container
+# - requirements.txt: Python dependencies
+# - .github/workflows/: CI/CD and security scan workflows
+#
+# See below for details.
 
 This project is a hands-on DevSecOps lab featuring a vulnerable Python Flask web application and a PostgreSQL database, both containerized for local development and security testing. It is designed to help you practice secure coding, static and dynamic security scanning, and container security in a realistic workflow.
 

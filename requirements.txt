@@ -1,3 +1,11 @@
+# requirements.txt for Flask App
+#
+# Lists Python dependencies for the DevSecOps practice Flask application.
+#
+# - Flask: Web framework
+# - psycopg2-binary: PostgreSQL driver
+# - setuptools: For secure packaging (version pinned for security)
+
 Flask
 psycopg2-binary
 setuptools>=78.1.1
