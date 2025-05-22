@@ -1,11 +1,17 @@
 name: DAST
 
+# ✅ Grant necessary permissions
+permissions:
+  contents: read
+  issues: write  # 👈 Needed to allow ZAP action to create/update GitHub issues
+
 on:
   workflow_dispatch:
 
 jobs:
   dast:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

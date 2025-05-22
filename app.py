@@ -44,7 +44,7 @@ def index():
     return render_template_string('''
         <h2>PostgreSQL Web Interface (Vulnerable)</h2>
         <form method="post">
-            <input name="query" value="{{ query|e }}" style="width:400px;" autocomplete="off" />
+            <input name="query" value="{{ query|e }}" style="width:400px;" autocomplete="off" pattern=".{0,200}" maxlength="200" />
             <input type="submit" value="Run" />
         </form>
         {% if result %}<pre>{{ result|e }}</pre>{% endif %}
