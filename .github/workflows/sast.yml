@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Docker image for app
         run: |
-          docker build -f app.Dockerfile -t myapp:latest .
+          docker build -f Dockerfile -t myapp:latest .
 
       - name: Run Trivy vulnerability scan on app image
         uses: aquasecurity/trivy-action@master
