@@ -1,6 +1,6 @@
-name: DAST Scan
+name: DAST
 
-# ✅ Set permissions so ZAP can create/update issues if needed
+# ✅ Set required permissions for ZAP to interact with issues (optional)
 permissions:
   contents: read
   issues: write
@@ -35,12 +35,12 @@ jobs:
         with:
           target: 'http://localhost:5000/'
           fail_action: false
-          artifact_name: zap_report  # ✅ Valid artifact name
+          artifact_name: zapreport  # ✅ Safe artifact name (letters only)
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
         with:
-          name: zap_report
+          name: zapreport
           path: zap-report.html
 
       - name: Tear down Docker Compose
