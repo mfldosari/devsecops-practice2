@@ -35,13 +35,13 @@ jobs:
         with:
           target: 'http://localhost:5000/'
           fail_action: false
-          artifact_name: zap-report
+          artifact_name: zapreport
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
         with:
-          name: zap-report
-          path: zap-report.html
+          name: zapreport
+          path: zapreport.html
 
       - name: Tear down Docker Compose
         if: always()
