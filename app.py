@@ -44,11 +44,11 @@ def index():
     return render_template_string('''
         <h2>PostgreSQL Web Interface (Vulnerable)</h2>
         <form method="post">
-            <input name="query" value="{{query}}" style="width:400px;" />
+            <input name="query" value="{{ query|e }}" style="width:400px;" />
             <input type="submit" value="Run" />
         </form>
-        {% if result %}<pre>{{result}}</pre>{% endif %}
-        {% if error %}<pre style="color:red;">{{error}}</pre>{% endif %}
+        {% if result %}<pre>{{ result|e }}</pre>{% endif %}
+        {% if error %}<pre style="color:red;">{{ error|e }}</pre>{% endif %}
         <p style="color:red;">Warning: This app is intentionally vulnerable to SQL injection for testing purposes.</p>
     ''', result=result, error=error, query=query)
 
@@ -56,13 +56,14 @@ def index():
 def set_security_headers(response):
     response.headers['X-Frame-Options'] = 'DENY'  # Anti-clickjacking
     response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self';"  # Improved CSP
     response.headers['Permissions-Policy'] = 'geolocation=()'
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
     # Remove Server header if possible
-    response.headers.pop('Server', None)
+    if 'Server' in response.headers:
+        del response.headers['Server']
     return response
 
 if __name__ == "__main__":
