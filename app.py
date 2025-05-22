@@ -44,7 +44,7 @@ def index():
     return render_template_string('''
         <h2>PostgreSQL Web Interface (Vulnerable)</h2>
         <form method="post">
-            <input name="query" value="{{ query|e }}" style="width:400px;" />
+            <input name="query" value="{{ query|e }}" style="width:400px;" autocomplete="off" />
             <input type="submit" value="Run" />
         </form>
         {% if result %}<pre>{{ result|e }}</pre>{% endif %}
@@ -56,12 +56,18 @@ def index():
 def robots():
     response = app.make_response('User-agent: *\nDisallow: /')
     response.headers['Content-Type'] = 'text/plain'
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
     return response
 
 @app.route('/sitemap.xml')
 def sitemap():
     response = app.make_response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>')
     response.headers['Content-Type'] = 'application/xml'
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
     return response
 
 @app.after_request
@@ -73,9 +79,11 @@ def set_security_headers(response):
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
+    response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
+    response.headers['Cross-Origin-Embedder-Policy'] = 'require-corp'
     # Remove Server header if possible (for Werkzeug)
     if 'Server' in response.headers:
-        response.headers['Server'] = ''
+        response.headers['Server'] = 'Secure'
     # Remove Werkzeug version from headers
     if 'X-Powered-By' in response.headers:
         del response.headers['X-Powered-By']
