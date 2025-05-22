@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template_string, make_response
 import os
 import psycopg2
 
@@ -51,6 +51,19 @@ def index():
         {% if error %}<pre style="color:red;">{{error}}</pre>{% endif %}
         <p style="color:red;">Warning: This app is intentionally vulnerable to SQL injection for testing purposes.</p>
     ''', result=result, error=error, query=query)
+
+@app.after_request
+def set_security_headers(response):
+    response.headers['X-Frame-Options'] = 'DENY'  # Anti-clickjacking
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    response.headers['Permissions-Policy'] = 'geolocation=()'
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    # Remove Server header if possible
+    response.headers.pop('Server', None)
+    return response
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
