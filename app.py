@@ -75,7 +75,7 @@ def set_security_headers(response):
     response.headers['Expires'] = '0'
     # Remove Server header if possible (for Werkzeug)
     if 'Server' in response.headers:
-        del response.headers['Server']
+        response.headers['Server'] = ''
     # Remove Werkzeug version from headers
     if 'X-Powered-By' in response.headers:
         del response.headers['X-Powered-By']
