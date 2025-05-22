@@ -1,9 +1,9 @@
-name: DAST
+name: DAST Scan
 
-# ✅ Grant necessary permissions
+# ✅ Set permissions so ZAP can create/update issues if needed
 permissions:
   contents: read
-  issues: write  # 👈 Needed to allow ZAP action to create/update GitHub issues
+  issues: write
 
 on:
   workflow_dispatch:
@@ -35,13 +35,13 @@ jobs:
         with:
           target: 'http://localhost:5000/'
           fail_action: false
-          artifact_name: zapreport
+          artifact_name: zap_report  # ✅ Valid artifact name
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
         with:
-          name: zapreport
-          path: zapreport.html
+          name: zap_report
+          path: zap-report.html
 
       - name: Tear down Docker Compose
         if: always()
