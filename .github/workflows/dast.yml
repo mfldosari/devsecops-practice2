@@ -1,9 +1,5 @@
 name: DAST
 
-permissions:
-  contents: read
-  issues: write
-
 on:
   workflow_dispatch:
 
@@ -12,11 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Enable debug logging
-        run: |
-          echo "ACTIONS_RUNNER_DEBUG=true" >> $GITHUB_ENV
-          echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -39,14 +30,12 @@ jobs:
         with:
           target: 'http://localhost:5000/'
           fail_action: false
-          artifact_name: zapreport123  # Try simpler, numeric artifact name
 
-      - name: Upload ZAP Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: zapreport123  # Using simple numeric/alphanumeric name
-          path: zap-report.html
-
+      - name: Print ZAP Scan Results to Terminal
+        run: |
+          echo "Displaying ZAP Scan results:"
+          cat zap-report.html  # Print the report to the terminal (or logs)
+        
       - name: Tear down Docker Compose
         if: always()
         run: docker compose down
