@@ -52,18 +52,33 @@ def index():
         <p style="color:red;">Warning: This app is intentionally vulnerable to SQL injection for testing purposes.</p>
     ''', result=result, error=error, query=query)
 
+@app.route('/robots.txt')
+def robots():
+    response = app.make_response('User-agent: *\nDisallow: /')
+    response.headers['Content-Type'] = 'text/plain'
+    return response
+
+@app.route('/sitemap.xml')
+def sitemap():
+    response = app.make_response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>')
+    response.headers['Content-Type'] = 'application/xml'
+    return response
+
 @app.after_request
 def set_security_headers(response):
     response.headers['X-Frame-Options'] = 'DENY'  # Anti-clickjacking
     response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self';"  # Improved CSP
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; sandbox allow-scripts;"  # Improved CSP with fallback
     response.headers['Permissions-Policy'] = 'geolocation=()'
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
-    # Remove Server header if possible
+    # Remove Server header if possible (for Werkzeug)
     if 'Server' in response.headers:
         del response.headers['Server']
+    # Remove Werkzeug version from headers
+    if 'X-Powered-By' in response.headers:
+        del response.headers['X-Powered-By']
     return response
 
 if __name__ == "__main__":
